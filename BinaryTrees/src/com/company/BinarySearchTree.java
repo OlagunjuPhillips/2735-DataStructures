@@ -1,14 +1,19 @@
 package com.company;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import java.lang.String;
 
-public class BinarySearchTree {
-    class Node{
-        int key;
-        Node left, right;
+/*
+Thanks to GeeksForGeeks for their template tree code
+ */
 
-        public Node(int node){
+public class BinarySearchTree {
+    class Node<Type>{
+        Type key;
+        Node<Type> left, right;
+
+        public Node(Type node){
             key = node;
             left = right = null;
         }
@@ -17,11 +22,12 @@ public class BinarySearchTree {
 
     Node root;
 
+
     BinarySearchTree(){
         root = null;
     }
 
-    public Node insertRec(Node root, int node){
+    public Node insertRec(Node<Integer> root, int node){
         if(root == null){
             root = new Node(node);
             return root;
@@ -53,7 +59,21 @@ public class BinarySearchTree {
         inorder(root);
     }
 
-    public int sumInt(Node node){
+    public void postorder(Node node){
+        if(node != null){
+            postorder(node.left);
+
+            postorder(node.right);
+
+            System.out.print(node.key + " ");
+        }
+    }
+
+    public void printPostorder(){
+        postorder(this.root);
+    }
+
+    public int sumInt(Node<Integer> node){
         if(node == null){
             return 0;
         }
@@ -64,7 +84,7 @@ public class BinarySearchTree {
         return sumInt(this.root);
     }
 
-    public int searchKey(Node node, int findKey){
+    public int searchKey(Node<Integer> node, int findKey){
         if (node == null || node.key == findKey){
             return node.key;
         }
@@ -83,11 +103,11 @@ public class BinarySearchTree {
         while(root.right != null){
             root = root.right;
         }
-        largest = root.key;
+        largest = (int) root.key;
         return largest;
     }
 
-    public ArrayList<Integer> values(Node node, ArrayList<Integer> value){
+    public ArrayList<Integer> values(Node<Integer> node, ArrayList<Integer> value){
         if(node != null){
             values(node.right, value);
 
@@ -100,7 +120,38 @@ public class BinarySearchTree {
 
     public int nthLargest(int n){
         ArrayList<Integer> value = new ArrayList<>();
-        return values(root, value).get(n - 1);
+        return (int) values(root, value).get(n - 1);
+    }
+
+
+
+    public Node<String> insertStr(Node<String> root, String node){
+        if(root == null){
+            root = new Node(node);
+            return root;
+        }
+
+        if(root.key.compareTo(node) < 0){
+            root.left = insertStr(root.left, node);
+        } else if(root.key.compareTo(node) > 0){
+            root.right = insertStr(root.right, node);
+        }
+        return root;
+    }
+
+    public void insert(String key){
+        root = insertStr(root, key);
+    }
+
+
+    public boolean search(Node<String> node, String findKey){
+        if (node.key.equals(findKey)){
+            return true;
+        }
+        if(node.key.compareTo(findKey) > 0){
+            return search(node.left, findKey);
+        }
+        return search(node.right, findKey);
     }
 
 

@@ -241,7 +241,14 @@ public class Main {
         System.out.println("\n"+tree5.nthLargest(4));
 
 
-
+        System.out.println("\nCreating tree6...");
+        List<String> fruitList = Arrays.asList("apple", "banana", "cherry", "dates", "elderberry", "fig");
+        BinarySearchTree tree6 = new BinarySearchTree();
+        for(String word : fruitList){
+            tree6.insert(word);
+        }
+        System.out.println("Done.");
+        tree6.printPostorder();
     }
 
     private static List<String> getNames(){
