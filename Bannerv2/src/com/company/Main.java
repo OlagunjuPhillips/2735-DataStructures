@@ -8,6 +8,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         final String fileName = "input.txt";
+        final int numOfStudents = 3325;
+
         final File file = new File(fileName);
 
         System.out.println("Hello Banner");
@@ -15,13 +17,13 @@ public class Main {
         System.out.println("\n");
 
         System.out.print("Creating the input file...");
-        createBannerData();
+        createBannerData(fileName, numOfStudents);
         System.out.println("done.");
 
-        getFileStudentNames(file);
+        getFileStudentNames(file, numOfStudents);
 
         String nameFrequency = studentNameFrequency(getStudentNames(),
-                getFileStudentNames(file));
+                getFileStudentNames(file, numOfStudents));
 
         System.out.println("\n");
 
@@ -29,15 +31,15 @@ public class Main {
 
         System.out.println("\n");
 
-        ArrayList<String> studentNameArrayList = arrayToList(getFileStudentNames(file));
+        ArrayList<String> studentNameArrayList = arrayToList(getFileStudentNames(file, numOfStudents));
         Collections.sort(studentNameArrayList);
         System.out.println("Name Array List: " + studentNameArrayList);
 
         System.out.println("\n");
 
-        checkForDuplicateID(file);
+        checkForDuplicateID(file, numOfStudents);
 
-        ArrayList<Student> studentList = getStudentList(file);
+        ArrayList<Student> studentList = getStudentList(file, numOfStudents);
         System.out.println("Student Array List: " + studentList);
 
         System.out.println("\n");
@@ -49,14 +51,14 @@ public class Main {
 
         System.out.println("Popped Stack: " + popStudentStack(studentStack));
 
-        Set<String> duplicateSet = checkForDuplicateIDSet(file);
+        Set<String> duplicateSet = checkForDuplicateIDSet(file, numOfStudents);
         System.out.println("\n");
 
         System.out.println("Here are the duplicates: " + duplicateSet);
 
         System.out.println("\n");
 
-        System.out.println(checkNameFrequencyMap(getStudentNames(), getFileStudentNames(file)));
+        System.out.println(checkNameFrequencyMap(getStudentNames(), getFileStudentNames(file, numOfStudents)));
 
 
 
@@ -84,10 +86,10 @@ public class Main {
         return currentStudentID + "," + studentName + "," + studentGPA;
     }
 
-    private static void createBannerData() {
+    private static void createBannerData(String fileName, int numOfStudents) {
         int studentID = 90000; //would have made these variables but they were specified values in the PDF
-        try (PrintWriter writer = new PrintWriter("input.txt")) { //Try with resources
-            for (int i = 0; i < 3325; i++) {
+        try (PrintWriter writer = new PrintWriter(fileName)) { //Try with resources
+            for (int i = 0; i < numOfStudents; i++) {
 
                 writer.println(createStudent(studentID));
                 studentID++;
@@ -98,10 +100,10 @@ public class Main {
         }
     }
 
-    private static List<String> getFileStudentNames(File fileName) throws FileNotFoundException {
+    private static List<String> getFileStudentNames(File fileName, int numOfStudents) throws FileNotFoundException {
         Scanner scanner = new Scanner(fileName);
-        String[] array = new String[3325];
-        for(int i = 0; i < 3325; i++){
+        String[] array = new String[numOfStudents];
+        for(int i = 0; i < numOfStudents; i++){
             String data = scanner.nextLine();
             String[] splitData = data.split(",");
             String studentName = splitData[1];
@@ -130,19 +132,19 @@ public class Main {
         return new ArrayList<>(names);
     }
 
-        private static void checkForDuplicateID(File fileName) throws FileNotFoundException {
+        private static void checkForDuplicateID(File fileName, int numOfStudents) throws FileNotFoundException {
         boolean isDuplicate = false;
             Scanner scanner = new Scanner(fileName);
             ArrayList<String> array = new ArrayList<>();
-            for(int i = 0; i < 3325; i++){
+            for(int i = 0; i < numOfStudents; i++){
                 String data = scanner.nextLine();
                 String[] splitData = data.split(",");
                 String studentID = splitData[0];
                 array.add(studentID);
 
             }
-            for(int i = 0; i < 3325; i++) {
-                for (int j = i+1; j < 3325; j++) {
+            for(int i = 0; i < numOfStudents; i++) {
+                for (int j = i+1; j < numOfStudents; j++) {
                     if (array.get(i).equals(array.get(j))) {
                         isDuplicate = true;
                         break;
@@ -156,10 +158,10 @@ public class Main {
             }
         }
 
-        private static ArrayList<Student> getStudentList(File fileName) throws FileNotFoundException {
+        private static ArrayList<Student> getStudentList(File fileName, int numOfStudents) throws FileNotFoundException {
             Scanner scanner = new Scanner(fileName);
             ArrayList<Student> array = new ArrayList<>();
-            for(int i = 0; i < 3325; i++){
+            for(int i = 0; i < numOfStudents; i++){
                 String data = scanner.nextLine();
                 String[] splitData = data.split(",");
                 String studentID = splitData[0];
@@ -186,10 +188,10 @@ public class Main {
             return studentStack;
         }
 
-        private static  Set<String> checkForDuplicateIDSet(File fileName) throws FileNotFoundException {
+        private static  Set<String> checkForDuplicateIDSet(File fileName, int numOfStudents) throws FileNotFoundException {
             Scanner scanner = new Scanner(fileName);
             ArrayList<String> array = new ArrayList<>();
-            for(int i = 0; i < 3325; i++){
+            for(int i = 0; i < numOfStudents; i++){
                 String data = scanner.nextLine();
                 String[] splitData = data.split(",");
                 String studentID = splitData[0];
@@ -198,7 +200,7 @@ public class Main {
             }
             final Set<String> set = new HashSet<>();
             final Set<String> duplicateSet = new HashSet<>();
-            for(int i = 0; i < 3325; i++) {
+            for(int i = 0; i < numOfStudents; i++) {
                     if(!set.add(array.get(i))){
                         duplicateSet.add(array.get(i));
                     }
